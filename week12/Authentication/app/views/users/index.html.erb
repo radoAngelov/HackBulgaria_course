@@ -1,0 +1,16 @@
+<p id="notice"><%= notice %></p>
+
+<h2> List of all users </h2>
+
+<table border="1">
+
+<% @users.each do |u| %>
+  <tr>
+  <th><%= u.first_name %></th>
+  <th><%= u.last_name %></th>
+  <th><%= link_to 'Show', user_path(u) %></th>
+  <th><%= link_to 'Delete account', u, method: :delete, data: { confirm: 'Are you sure? There is now way back!' } %></th>
+  <th><%= link_to "Sign out", signout_path, method: :delete %></th>
+  </tr>
+<% end %>
+</table>

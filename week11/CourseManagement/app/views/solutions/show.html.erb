@@ -1,0 +1,8 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+    <%= @solution.answer %>
+</p>
+
+<%= link_to 'Edit', edit_lecture_task_solution_path(params[:lecture_id], params[:task_id], @solution) %> |
+<%= link_to 'Back', lecture_task_solutions_path(params[:lecture_id], params[:task_id]) %>

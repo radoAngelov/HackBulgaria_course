@@ -1,0 +1,6 @@
+<h1>Your account consists:</h1>
+
+<%= @user.inspect %>
+
+<%= link_to 'See all users', users_path %>
+<%= link_to 'Sign out', signout_path, method: :delete %>

@@ -1,0 +1,8 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+    <%= @task.description %>
+</p>
+
+<%= link_to 'Edit', edit_lecture_task_path(params[:lecture_id], @task) %> |
+<%= link_to 'Back', lecture_tasks_path(params[:lecture_id]) %>

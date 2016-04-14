@@ -1,0 +1,32 @@
+<p id="notice"><%= notice %></p>
+
+<h1>List of all tasks for this lecture</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% if @tasks.empty? %>
+      <strong> No tasks yet </strong>
+    <% else %>
+      <% @tasks.each do |task| %>
+        <tr>
+          <td><%= task.name %></td>
+          <td><%= link_to 'Show', lecture_task_path(params[:lecture_id], task) %></td>
+          <td><%= link_to 'Edit', edit_lecture_task_path(params[:lecture_id], task) %></td>
+          <td><%= link_to 'Destroy', lecture_task_path(params[:lecture_id], task), method: :delete, data: { confirm: 'Are you sure, you cannot restore it!!!' } %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Task', new_lecture_task_path(params[:lecture_id]) %>
+<%= link_to 'Home Page', lectures_path %>

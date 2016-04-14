@@ -1,0 +1,13 @@
+<h1>Editing Solution</h1>
+
+<%= form_for @solution, url: lecture_task_solution_path(params[:lecture_id], params[:task_id], @solution), method: :put  do |f| %>  
+  <div class="field">
+    <%= f.label :answer %><br>
+    <%= f.text_field :answer %><br>
+  </div> 
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+<%= link_to 'Back', lecture_task_solutions_path(params[:lecture_id], params[:task_id]) %>
