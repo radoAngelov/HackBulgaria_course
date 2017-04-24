@@ -20,6 +20,15 @@ ActiveRecord::Schema.define(version: 20160223193412) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "solutions", force: :cascade do |t|
+    t.text     "answer"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "task_id"
+  end
+
+  add_index "solutions", ["task_id"], name: "index_solutions_on_task_id"
+
   create_table "tasks", force: :cascade do |t|
     t.string   "name"
     t.text     "description"
@@ -29,14 +38,5 @@ ActiveRecord::Schema.define(version: 20160223193412) do
   end
 
   add_index "tasks", ["lecture_id"], name: "index_tasks_on_lecture_id"
-
-  create_table "solutions", force: :cascade do |t|
-    t.text     "answer"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer  "task_id"
-  end
-
-  add_index "solutions", ["task_id"], name: "index_solutions_on_task_id"
 
 end
