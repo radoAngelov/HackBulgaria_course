@@ -2,29 +2,23 @@ require 'rails_helper'
 
 RSpec.describe LecturesController, :type => :controller do
 	describe "GET /lectures" do
+		let(:lecture1) { Lecture.create(name: "Test1", body: "Nothing here!") }
+		let(:lecture2) { Lecture.create(name: "Test2", body: "Nothing here!") }
+		
 		before do
-			@lecture1 = Lecture.create(name: "Test1", body: "Nothing here!")
-			@lecture2 = Lecture.create(name: "Test1", body: "Nothing here!")
+			get :index
 		end
 
 		it "renders the :index template" do
-			get :index
 			expect(response).to render_template("index")
 		end
 
-		it "returns status code 200(OK)" do
-			get :index
-			expect(response).to have_http_status 200
-		end
-
 		it "should list all lectures" do
-			get :index
-			expect(assigns(:lectures).size).to eq 2	
+			expect(assigns(:lecture).size).to eq 2
 		end
 
 		it "loads exactly all lectures in @lectures" do
-			get :index
-			expect(assigns(:lectures)).to match_array([@lecture1, @lecture2])
+			expect(assigns(:lectures)).to match_array([lecture1, lecture2])
 		end
 	end
 
