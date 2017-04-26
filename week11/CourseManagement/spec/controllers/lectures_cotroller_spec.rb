@@ -50,8 +50,8 @@ RSpec.describe LecturesController, :type => :controller do
   end
 
   describe "DELETE /lectures/:id" do
-    let(:lecture) { Lecture.create(name: 'Test', body: 'Test') }
-    let(:test) { Task.create(lecture_id: lecture.id, name: 'Write tests', description: 'RSpec master') }
+    let!(:lecture) { Lecture.create(name: 'Test', body: 'Test') }
+    let!(:test) { Task.create(lecture_id: lecture.id, name: 'Write tests', description: 'RSpec master') }
 
     it "deletes lecture from database" do
       expect { delete :destroy, id: lecture.id }.to change(Lecture, :count).by -1
@@ -64,6 +64,7 @@ RSpec.describe LecturesController, :type => :controller do
     end
 
     it "deletes related tasks" do
+      delete :destroy, id: lecture.id
       expect(lecture.tasks.empty?).to be true
     end
   end
