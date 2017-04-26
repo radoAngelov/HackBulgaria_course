@@ -36,31 +36,31 @@ RSpec.describe LecturesController, :type => :controller do
 
 	describe "POST /lectures/new" do
 		context "creates with valid params" do
-      let(:valid_lecture) { { name: 'Test', body: 'Testing the create method in controller' } }
+			let(:valid_lecture) { { name: 'Test', body: 'Testing the create method in controller' } }
 
-      before do
-      	post :create, valid_lecture
-      end
+			before do
+				post :create, valid_lecture
+			end
 
 			it "saves the new lecture" do
 				expect(response).to have_http_status 201
 			end
 
-      it "shows new lecture" do
-        should redirect_to(Lecture.last)
-      end
+			it "shows new lecture" do
+				should redirect_to(Lecture.last)
+			end
 
-      it "expects notice message" do
-        expect(flash[:notice]).to_not be_nil
-      end
-    end
+			it "expects notice message" do
+				expect(flash[:notice]).to_not be_nil
+			end
+		end
 
 		context "creates with invalid params" do
-  	  let(:invalid_lecture) { {name: nil, body: nil} }
+			let(:invalid_lecture) { {name: nil, body: nil} }
 
-  	  before do
-  	  	post :create, invalid_lecture
-  	  end
+			before do
+				post :create, invalid_lecture
+			end
 
 			it "re-renders the :new template" do
 				should render_template("new")
@@ -115,6 +115,11 @@ RSpec.describe LecturesController, :type => :controller do
 
 			it "updates the lecture body" do
 				expect(lecture.body).to eq('Updated')
+			end
+
+			it "redirects to the updated lecture" do
+				expect(response).to have_http_status 302
+				expect(response).to redirect_to(lecture)
 			end
 		end
 
