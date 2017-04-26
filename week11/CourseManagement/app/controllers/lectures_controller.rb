@@ -13,30 +13,30 @@ class LecturesController < ApplicationController
     if @lecture.save
       redirect_to @lecture, notice: 'Lecture was successfully created.'
     else
-      render :new
+      render :new, status:422
     end
   end
 
   def edit
-    @lecture = Lecture.find(params[:id])
+    @lecture = find_lecture
   end
 
   def show
-    @lecture = Lecture.find(params[:id])
+    @lecture = find_lecture
   end
 
   def update
-    @lecture = Lecture.find(params[:id])
+    @lecture = find_lecture
 
     if @lecture.update(lecture_params)
-      redirect_to @lecture, notice: 'Lecture was successfully updated.'
+      redirect_to @lecture, status: 304, notice: 'Lecture was successfully updated.'
     else
-      render :edit
+      render :edit, status: 400
     end
   end
 
   def destroy
-    @lecture = Lecture.find(params[:id])
+    @lecture = find_lecture
     @lecture.destroy
 
     redirect_to lectures_path, notice: 'Lecture was successfully deleted.'
@@ -46,5 +46,9 @@ class LecturesController < ApplicationController
 
   def lecture_params
     params.permit(:name, :body)
+  end
+
+  def find_lecture
+    Lecture.find(params[:id])
   end
 end
