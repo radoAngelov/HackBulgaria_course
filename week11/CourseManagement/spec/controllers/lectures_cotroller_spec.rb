@@ -76,7 +76,7 @@ RSpec.describe LecturesController, :type => :controller do
     end
   end
 
-  describe "PUT /feeds/:id" do
+  describe "PUT /lectures/:id" do
     let(:lecture) { Lecture.create(name: 'Test1', body: 'Test1') }
 
     context "updates with valid params" do
