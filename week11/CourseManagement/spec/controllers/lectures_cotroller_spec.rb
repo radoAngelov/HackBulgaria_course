@@ -23,28 +23,35 @@ RSpec.describe LecturesController, :type => :controller do
 
   describe "POST /lectures/create" do
     context "creates with valid params" do
-      let(:valid_lecture) { { name: 'Test', body: 'Testing the create method in controller' } }
+      let(:valid_lecture) { {lecture: {name: 'Test', body: 'Testing the create method in controller'}} }
 
       it "it successfully creates a new lecture" do
         post :create, valid_lecture
-        expect(Lecture.last.name).to eq 'Test'
-        expect(Lecture.last.body).to eq 'Testing the create method in controller'
+        expect(assigns(:lecture).name).to eq 'Test'
+        expect(assigns(:lecture).body).to eq 'Testing the create method in controller'
       end
 
-      it "saves the new lecture and redirects to it with notice" do
+      it "saves the lecture to database" do
+        expect { post :create, valid_lecture }.to change(Lecture, :count).by 1
+      end
+
+      it "redirects to new lecture with notice" do
         post :create, valid_lecture
-        should redirect_to(Lecture.last)
+        expect(response).to redirect_to(Lecture.last)
         expect(flash[:notice]).to eq 'Lecture was successfully created.'
       end
     end
 
     context "creates with invalid params" do
-      let(:invalid_lecture) { {name: nil, body: nil} }
+      let(:invalid_lecture) { {lecture: {name: nil, body: nil}} }
 
-      it "re-renders the :new template without saving the new lecture" do
+      it "must not save the lecture" do
+        expect { post :create, invalid_lecture }.to_not change(Lecture, :count)
+      end
+ 
+      it "re-renders the :new template" do
         post :create, invalid_lecture
-        should render_template("new")
-        expect(response).to have_http_status 422
+        expect(response).to render_template("new")
       end
     end
   end
@@ -59,7 +66,7 @@ RSpec.describe LecturesController, :type => :controller do
 
     it "redirects to #index with notice message" do
       delete :destroy, id: lecture.id
-      should redirect_to lectures_path
+      expect(response).to redirect_to lectures_path
       expect(flash[:notice]).to eq 'Lecture was successfully deleted.'
     end
 
@@ -73,30 +80,26 @@ RSpec.describe LecturesController, :type => :controller do
     let(:lecture) { Lecture.create(name: 'Test1', body: 'Test1') }
 
     context "updates with valid params" do
-      let(:lecture_name) { 'Updated' }
-      let(:lecture_body) { 'Updated' }
+      let(:valid_params) { {id: lecture.id, lecture: {name: 'Updated', body: 'Updated'}} }
 
       it "should update the lecture name and body and redirect to the updated lecture with notice" do
-        put :update, id: lecture.id, name: lecture_name, body: lecture_body
+        put :update, valid_params
         lecture.reload
         expect(lecture.name).to eq('Updated')
         expect(lecture.body).to eq('Updated')
-        expect(response).to have_http_status 304
         expect(response).to redirect_to(lecture)
         expect(flash[:notice]).to eq 'Lecture was successfully updated.'
       end
     end
 
     context "updates with invalid params" do
-      let(:lecture_name) { '' }
-      let(:lecture_body) { nil }
+      let(:invalid_params) { {id: lecture.id, lecture: {name: '', body: nil}} }
 
       it "should not update the lecture name and body and re-render the :edit template" do
-        put :update, id: lecture.id, name: lecture_name, body: lecture_body
+        put :update, invalid_params
         lecture.reload
         expect(lecture.name).to eq 'Test1'
         expect(lecture.body).to eq 'Test1'
-        expect(response).to have_http_status 400
         expect(response).to render_template("edit")
       end
     end

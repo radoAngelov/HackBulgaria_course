@@ -13,7 +13,7 @@ class LecturesController < ApplicationController
     if @lecture.save
       redirect_to @lecture, notice: 'Lecture was successfully created.'
     else
-      render :new, status:422
+      render :new
     end
   end
 
@@ -29,9 +29,9 @@ class LecturesController < ApplicationController
     @lecture = find_lecture
 
     if @lecture.update(lecture_params)
-      redirect_to @lecture, status: 304, notice: 'Lecture was successfully updated.'
+      redirect_to @lecture, notice: 'Lecture was successfully updated.'
     else
-      render :edit, status: 400
+      render :edit
     end
   end
 
@@ -45,7 +45,7 @@ class LecturesController < ApplicationController
   private
 
   def lecture_params
-    params.permit(:name, :body)
+    params.require(:lecture).permit(:name, :body)
   end
 
   def find_lecture
